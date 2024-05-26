@@ -11,7 +11,7 @@ const port = 3000;
 app.use(bodyParser.json());
 
 // Web3 sağlayıcı ve kontrat ayarları
-const web3 = new Web3('https://eth-sepolia.g.alchemy.com/v2/qV1dWMrg0ozx_N9IfjgNg68dGVN2eczb');
+const web3 = new Web3('https://eth-sepolia.g.alchemy.com/v2/YOURADDRESS');
 
 // const contractPath = path.resolve(__dirname, 'build', 'contracts', 'Voting.json');
 const contractPath = path.resolve(__dirname, '..', 'e-VotingSystem', 'build', 'contracts', 'Voting.json');
