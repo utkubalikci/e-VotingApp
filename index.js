@@ -14,19 +14,17 @@ app.use(bodyParser.json());
 const web3 = new Web3('https://eth-sepolia.g.alchemy.com/v2/qV1dWMrg0ozx_N9IfjgNg68dGVN2eczb');
 
 // const contractPath = path.resolve(__dirname, 'build', 'contracts', 'Voting.json');
-const contractPath = path.resolve(__dirname, '..', 'VotingSystem', 'build', 'contracts', 'Voting.json');
+const contractPath = path.resolve(__dirname, '..', 'e-VotingSystem', 'build', 'contracts', 'Voting.json');
 const { abi, networks } = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
 let votingContract;
 let contractAddress;
 web3.eth.net.getId().then(networkId => {
     contractAddress = networks[networkId].address;
     votingContract = new web3.eth.Contract(abi, contractAddress); // dışarıda tanımlı olan votingContract'a atama yapıyoruz
-    console.log("in then: " + contractAddress)
 }).catch(error => {
     console.log("Error")
     console.error('Error while fetching network id:', error);
 });
-console.log("Out: " + contractAddress)
 
 app.get('/candidates', async (req, res) => {
     try {
