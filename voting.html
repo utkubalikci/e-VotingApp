@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,12 +9,32 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: #007bff;
+            padding: 10px 0;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            margin-bottom: 20px;
         }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
         .container {
             background-color: #ffffff;
             padding: 20px;
@@ -21,25 +42,31 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
-        }
-        h1 {
             text-align: center;
+        }
+
+        h1 {
             color: #333333;
         }
+
         form {
             display: flex;
             flex-direction: column;
         }
+
         label {
             margin-bottom: 5px;
             color: #555555;
         }
-        select, input {
+
+        select,
+        input {
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #dddddd;
             border-radius: 5px;
         }
+
         button {
             padding: 10px;
             background-color: #007bff;
@@ -49,18 +76,30 @@
             cursor: pointer;
             font-size: 16px;
         }
+
         button:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
+
 <body>
+    <div class="navbar">
+        <a href="/">Anasayfa</a>
+        <a href="/candidatesPage">Adaylar</a>
+        <a href="/votePage">Oy Ver</a>
+    </div>
+
     <div class="container">
         <h1>Elektronik Oylama Sistemi</h1>
         <form id="voteForm">
             <label for="candidate">Aday:</label>
             <select id="candidate" name="candidate">
                 <!-- Adaylar buraya dinamik olarak eklenecek -->
+                <option value=0>Kemal Kılıçdaroğlu</option>
+                <option value=1>Recep Tayyip Erdoğan</option>
+                <option value=2>Sinan Oğan</option>
+                <option value=3>Muharrem İnce</option>
             </select>
             <label for="address">Ethereum Adresi:</label>
             <input type="text" id="address" name="address" required>
@@ -72,30 +111,33 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
+            const navbar = createNavbar();
+            document.body.insertBefore(navbar, document.body.firstChild);
+
             const form = document.getElementById('voteForm');
             const candidateSelect = document.getElementById('candidate');
 
-            // Adayları dinamik olarak getir
-            const response = await fetch('/candidates');
-            const candidates = await response.json();
-            candidates.forEach(candidate => {
-                const option = document.createElement('option');
-                option.value = candidate.index; // Adayın indeksi
-                option.textContent = candidate.name; // Adayın adı
-                candidateSelect.appendChild(option);
-            });
+            // // Adayları dinamik olarak getir
+            // const response = await fetch('/candidates');
+            // const candidates = await response.json();
+            // candidates.forEach(candidate => {
+            //     const option = document.createElement('option');
+            //     option.value = candidate.index; // Adayın indeksi
+            //     option.textContent = candidate.name; // Adayın adı
+            //     candidateSelect.appendChild(option);
+            // });
 
             // Form gönderildiğinde
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const formData = new FormData(form);
                 const data = {
-                    candidate: formData.get('candidate').value, //BURASI DÜZELTİLECEK SEÇİME GÖRE DİNAMİK ALMASI LAZIM
+                    candidate: parseInt(formData.get('candidate'), 10), //BURASI DÜZELTİLECEK SEÇİME GÖRE DİNAMİK ALMASI LAZIM
                     fromAddress: formData.get('address'),
                     privateKey: formData.get('privateKey')
                 };
-                console.log('Adaylar:', candidates);
                 console.log(data);
+
                 try {
                     const response = await fetch('/vote', {
                         method: 'POST',
@@ -118,4 +160,5 @@
         });
     </script>
 </body>
+
 </html>
