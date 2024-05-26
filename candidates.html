@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaylar - Elektronik Oylama Sistemi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .navbar {
+            width: 100%;
+            background-color: #007bff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #333333;
+        }
+        .candidate-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .candidate-item {
+            padding: 10px;
+            border-bottom: 1px solid #dddddd;
+        }
+        .candidate-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Anasayfa</a>
+        <a href="/candidatesPage">Adaylar</a>
+        <a href="/votePage">Oy Ver</a>
+    </div>
+
+    <div class="container">
+        <h1>Adaylar</h1>
+        <ul class="candidate-list" id="candidateList">
+            <!-- Adaylar burada listelenecek -->
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const candidateList = document.getElementById('candidateList');
+
+            try {
+                const response = await fetch('/candidates');
+                const candidates = await response.json();
+                
+                candidates.forEach(candidate => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'candidate-item';
+                    listItem.textContent = `${candidate.name} - Oy Sayısı: ${candidate.voteCount}`;
+                    candidateList.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error('Adaylar yüklenirken bir hata oluştu:', error);
+                const errorMessage = document.createElement('p');
+                errorMessage.textContent = 'Adaylar yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.';
+                candidateList.appendChild(errorMessage);
+            }
+        });
+    </script>
+</body>
+</html>

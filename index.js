@@ -41,6 +41,10 @@ app.get('/candidates', async (req, res) => {
     }
 });
 
+app.get('/candidatesPage', (req, res) => {
+    res.sendFile(path.join(__dirname, 'candidates.html'));
+});
+
 app.post('/vote', async (req, res) => {
     try {
         const { candidate, fromAddress, privateKey } = req.body;
@@ -67,7 +71,7 @@ app.post('/vote', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Blockchain based e-Voting System!'); // Ana sayfa
+    res.sendFile(path.join(__dirname, 'home.html'));
 });
 app.get('/votePage', (req, res) => {
     res.sendFile(path.join(__dirname, 'voting.html'));
